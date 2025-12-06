@@ -33,6 +33,32 @@
 | createdAt | 0 | String (Date) | 생성 일시 |
 | updatedAt | 0 | String (Date) | 수정 일시 |
 
+**Response Example (JSON)**
+
+**result**:
+```json
+{
+  "id": 1,
+  "title": "주일 예배",
+  "description": "매주 드리는 청년부 예배",
+  "startDateTime": "2025-03-02T02:00:00.000Z",
+  "endDateTime": "2025-03-02T03:00:00.000Z",
+  "location": "대예배당",
+  "category": "예배",
+  "isImportant": false,
+  "importantMemo": null,
+  "createdAt": "2025-03-01T09:00:00.000Z",
+  "updatedAt": "2025-03-01T09:00:00.000Z"
+}
+```
+
+**error**:
+```json
+{
+  "message": "title, startDateTime, endDateTime은 필수입니다."
+}
+```
+
 ---
 
 ### 1.2 일정 목록 조회
@@ -61,6 +87,41 @@
 | createdAt | 1 | String (Date) | 생성 일시 |
 | updatedAt | 1 | String (Date) | 수정 일시 |
 
+**Response Example (JSON)**
+
+**result**:
+```json
+[
+  {
+    "id": 1,
+    "title": "주일 예배",
+    "description": "매주 드리는 청년부 예배",
+    "startDateTime": "2025-03-02T02:00:00.000Z",
+    "endDateTime": "2025-03-02T03:00:00.000Z",
+    "location": "대예배당",
+    "isImportant": false,
+    "category": "예배"
+  },
+  {
+    "id": 2,
+    "title": "팀 주간 회의",
+    "description": null,
+    "startDateTime": "2025-03-10T05:00:00.000Z",
+    "endDateTime": "2025-03-10T06:00:00.000Z",
+    "isImportant": false,
+    "category": "회의"
+  }
+]
+```
+
+**error**:
+```json
+{
+  "message": "일정 조회 중 오류가 발생했습니다.",
+  "error": "Error details..."
+}
+```
+
 ---
 
 ### 1.3 단일 일정 조회
@@ -87,6 +148,29 @@
 | importantMemo | 0 | String | 중요 일정 메모 |
 | createdAt | 0 | String (Date) | 생성 일시 |
 | updatedAt | 0 | String (Date) | 수정 일시 |
+
+**Response Example (JSON)**
+
+**result**:
+```json
+{
+  "id": 1,
+  "title": "주일 예배",
+  "description": "매주 드리는 청년부 예배",
+  "startDateTime": "2025-03-02T02:00:00.000Z",
+  "endDateTime": "2025-03-02T03:00:00.000Z",
+  "location": "대예배당",
+  "category": "예배",
+  "isImportant": false
+}
+```
+
+**error**:
+```json
+{
+  "message": "일정을 찾을 수 없습니다."
+}
+```
 
 ---
 
@@ -125,6 +209,30 @@
 | createdAt | 0 | String (Date) | 생성 일시 |
 | updatedAt | 0 | String (Date) | 수정 일시 |
 
+**Response Example (JSON)**
+
+**result**:
+```json
+{
+  "id": 1,
+  "title": "주일 예배 (시간 변경)",
+  "description": "매주 드리는 청년부 예배",
+  "startDateTime": "2025-03-02T02:00:00.000Z",
+  "endDateTime": "2025-03-02T03:00:00.000Z",
+  "location": "대예배당",
+  "category": "예배",
+  "isImportant": false,
+  "updatedAt": "2025-03-02T10:00:00.000Z"
+}
+```
+
+**error**:
+```json
+{
+  "message": "일정을 찾을 수 없습니다."
+}
+```
+
 ---
 
 ### 1.5 일정 삭제
@@ -140,6 +248,18 @@
 **응답 (Response)**
 - **Status Code**: `204 No Content`
 - **Body**: 없음
+
+**Response Example (JSON)**
+
+**result**:
+(No Content)
+
+**error**:
+```json
+{
+  "message": "일정을 찾을 수 없습니다."
+}
+```
 
 ---
 
@@ -173,6 +293,39 @@
 | createdAt | 1 | String (Date) | 생성 일시 |
 | updatedAt | 1 | String (Date) | 수정 일시 |
 
+**Response Example (JSON)**
+
+**result**:
+```json
+[
+  {
+    "id": 1,
+    "title": "3월 킥오프",
+    "startDateTime": "2025-03-03T09:00:00.000Z",
+    "endDateTime": "2025-03-03T10:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "title": "3월 팀 싱크",
+    "startDateTime": "2025-03-10T05:00:00.000Z",
+    "endDateTime": "2025-03-10T06:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "title": "3월 마감",
+    "startDateTime": "2025-03-28T02:00:00.000Z",
+    "endDateTime": "2025-03-28T03:00:00.000Z"
+  }
+]
+```
+
+**error**:
+```json
+{
+  "message": "year와 month는 필수입니다."
+}
+```
+
 ---
 
 ### 2.2 주 단위 일정 조회
@@ -203,6 +356,27 @@
 | createdAt | 1 | String (Date) | 생성 일시 |
 | updatedAt | 1 | String (Date) | 수정 일시 |
 
+**Response Example (JSON)**
+
+**result**:
+```json
+[
+  {
+    "id": 2,
+    "title": "3월 팀 싱크",
+    "startDateTime": "2025-03-10T05:00:00.000Z",
+    "endDateTime": "2025-03-10T06:00:00.000Z"
+  }
+]
+```
+
+**error**:
+```json
+{
+  "message": "year, month, week는 필수입니다."
+}
+```
+
 ---
 
 ### 2.3 일 단위 일정 조회
@@ -231,6 +405,27 @@
 | createdAt | 1 | String (Date) | 생성 일시 |
 | updatedAt | 1 | String (Date) | 수정 일시 |
 
+**Response Example (JSON)**
+
+**result**:
+```json
+[
+  {
+    "id": 2,
+    "title": "3월 팀 싱크",
+    "startDateTime": "2025-03-10T05:00:00.000Z",
+    "endDateTime": "2025-03-10T06:00:00.000Z"
+  }
+]
+```
+
+**error**:
+```json
+{
+  "message": "date 쿼리가 필요합니다."
+}
+```
+
 ---
 
 ### 2.4 오늘 일정 조회
@@ -255,6 +450,27 @@
 | importantMemo | 1 | String | 중요 일정 메모 |
 | createdAt | 1 | String (Date) | 생성 일시 |
 | updatedAt | 1 | String (Date) | 수정 일시 |
+
+**Response Example (JSON)**
+
+**result**:
+```json
+[
+  {
+    "id": 5,
+    "title": "오늘의 일정",
+    "startDateTime": "2025-12-07T03:00:00.000Z",
+    "endDateTime": "2025-12-07T04:00:00.000Z"
+  }
+]
+```
+
+**error**:
+```json
+{
+  "message": "오늘 일정 조회 중 오류가 발생했습니다."
+}
+```
 
 ---
 
@@ -284,6 +500,33 @@
 | importantMemo | 1 | String | 중요 일정 메모 |
 | createdAt | 1 | String (Date) | 생성 일시 |
 | updatedAt | 1 | String (Date) | 수정 일시 |
+
+**Response Example (JSON)**
+
+**result**:
+```json
+[
+  {
+    "id": 1,
+    "title": "3월 킥오프",
+    "startDateTime": "2025-03-03T09:00:00.000Z",
+    "endDateTime": "2025-03-03T10:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "title": "3월 팀 싱크",
+    "startDateTime": "2025-03-10T05:00:00.000Z",
+    "endDateTime": "2025-03-10T06:00:00.000Z"
+  }
+]
+```
+
+**error**:
+```json
+{
+  "message": "startDate와 endDate가 필요합니다."
+}
+```
 
 ---
 
@@ -315,6 +558,25 @@
 | createdAt | 0 | String (Date) | 생성 일시 |
 | updatedAt | 0 | String (Date) | 수정 일시 |
 
+**Response Example (JSON)**
+
+**result**:
+```json
+{
+  "id": 1,
+  "title": "미래 전략 컨퍼런스",
+  "isImportant": true,
+  "importantMemo": null
+}
+```
+
+**error**:
+```json
+{
+  "message": "일정을 찾을 수 없습니다."
+}
+```
+
 ---
 
 ### 3.2 중요 일정 해제
@@ -342,6 +604,25 @@
 | createdAt | 0 | String (Date) | 생성 일시 |
 | updatedAt | 0 | String (Date) | 수정 일시 |
 
+**Response Example (JSON)**
+
+**result**:
+```json
+{
+  "id": 1,
+  "title": "미래 전략 컨퍼런스",
+  "isImportant": false,
+  "importantMemo": null
+}
+```
+
+**error**:
+```json
+{
+  "message": "일정을 찾을 수 없습니다."
+}
+```
+
 ---
 
 ### 3.3 중요 일정 전체 조회
@@ -367,6 +648,26 @@
 | createdAt | 1 | String (Date) | 생성 일시 |
 | updatedAt | 1 | String (Date) | 수정 일시 |
 
+**Response Example (JSON)**
+
+**result**:
+```json
+[
+  {
+    "id": 1,
+    "title": "미래 전략 컨퍼런스",
+    "isImportant": true
+  }
+]
+```
+
+**error**:
+```json
+{
+  "message": "중요 일정 조회 중 오류가 발생했습니다."
+}
+```
+
 ---
 
 ### 3.4 다가오는 중요 일정 조회
@@ -391,6 +692,26 @@
 | importantMemo | 1 | String | 중요 일정 메모 |
 | createdAt | 1 | String (Date) | 생성 일시 |
 | updatedAt | 1 | String (Date) | 수정 일시 |
+
+**Response Example (JSON)**
+
+**result**:
+```json
+[
+  {
+    "id": 1,
+    "title": "미래 전략 컨퍼런스",
+    "isImportant": true
+  }
+]
+```
+
+**error**:
+```json
+{
+  "message": "다가오는 중요 일정 조회 중 오류가 발생했습니다."
+}
+```
 
 ---
 
@@ -424,6 +745,25 @@
 | createdAt | 0 | String (Date) | 생성 일시 |
 | updatedAt | 0 | String (Date) | 수정 일시 |
 
+**Response Example (JSON)**
+
+**result**:
+```json
+{
+  "id": 1,
+  "title": "미래 전략 컨퍼런스",
+  "isImportant": true,
+  "importantMemo": "발표 자료 지참"
+}
+```
+
+**error**:
+```json
+{
+  "message": "memo 는 문자열이어야 합니다."
+}
+```
+
 ---
 
 ## 4. 검색 API (Search API)
@@ -455,6 +795,27 @@
 | createdAt | 1 | String (Date) | 생성 일시 |
 | updatedAt | 1 | String (Date) | 수정 일시 |
 
+**Response Example (JSON)**
+
+**result**:
+```json
+[
+  {
+    "id": 1,
+    "title": "가족 수련회",
+    "description": "전교인 가족 수련회",
+    "isImportant": false
+  }
+]
+```
+
+**error**:
+```json
+{
+  "message": "keyword 파라미터가 필요합니다."
+}
+```
+
 ---
 
 ### 4.2 제목 검색
@@ -483,6 +844,27 @@
 | createdAt | 1 | String (Date) | 생성 일시 |
 | updatedAt | 1 | String (Date) | 수정 일시 |
 
+**Response Example (JSON)**
+
+**result**:
+```json
+[
+  {
+    "id": 2,
+    "title": "성가대 연습",
+    "description": "저녁 연습",
+    "isImportant": false
+  }
+]
+```
+
+**error**:
+```json
+{
+  "message": "title 파라미터가 필요합니다."
+}
+```
+
 ---
 
 ### 4.3 날짜 검색
@@ -510,6 +892,27 @@
 | importantMemo | 1 | String | 중요 일정 메모 |
 | createdAt | 1 | String (Date) | 생성 일시 |
 | updatedAt | 1 | String (Date) | 수정 일시 |
+
+**Response Example (JSON)**
+
+**result**:
+```json
+[
+  {
+    "id": 2,
+    "title": "성가대 연습",
+    "startDateTime": "2025-05-03T19:00:00.000Z",
+    "isImportant": false
+  }
+]
+```
+
+**error**:
+```json
+{
+  "message": "date 파라미터가 필요합니다."
+}
+```
 
 ---
 
@@ -540,7 +943,32 @@
 | createdAt | 1 | String (Date) | 생성 일시 |
 | updatedAt | 1 | String (Date) | 수정 일시 |
 
----
+**Response Example (JSON)**
+
+**result**:
+```json
+[
+  {
+    "id": 2,
+    "title": "성가대 연습"
+  },
+  {
+    "id": 3,
+    "title": "운영위원회 회의"
+  },
+  {
+    "id": 4,
+    "title": "성경 공부"
+  }
+]
+```
+
+**error**:
+```json
+{
+  "message": "startDate와 endDate 파라미터가 필요합니다."
+}
+```
 
 ### 4.5 최근 일정 조회
 - **메서드**: `GET`
@@ -567,3 +995,26 @@
 | importantMemo | 1 | String | 중요 일정 메모 |
 | createdAt | 1 | String (Date) | 생성 일시 |
 | updatedAt | 1 | String (Date) | 수정 일시 |
+
+**Response Example (JSON)**
+
+**result**:
+```json
+[
+  {
+    "id": 4,
+    "title": "성경 공부"
+  },
+  {
+    "id": 3,
+    "title": "운영위원회 회의"
+  }
+]
+```
+
+**error**:
+```json
+{
+  "message": "최근 일정 조회 중 오류가 발생했습니다."
+}
+```
