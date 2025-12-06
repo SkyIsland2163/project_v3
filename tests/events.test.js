@@ -4,12 +4,12 @@ const app = require('../src/app');
 const { sequelize, Event } = require('../src/database');
 
 const basePayload = {
-  title: 'Sunday Service',
-  description: 'Weekly worship',
+  title: '주일 예배',
+  description: '매주 드리는 청년부 예배',
   startDateTime: '2025-03-02T02:00:00.000Z',
   endDateTime: '2025-03-02T03:00:00.000Z',
-  location: 'Main Hall',
-  category: 'worship'
+  location: '대예배당',
+  category: '예배'
 };
 
 // 이벤트 생성/조회/수정/삭제와 필터링을 검증하는 테스트.
@@ -36,20 +36,20 @@ describe('Events API', () => {
     await Event.bulkCreate([
       basePayload,
       {
-        title: 'Team Meeting',
+        title: '팀 주간 회의',
         startDateTime: '2025-03-10T05:00:00.000Z',
         endDateTime: '2025-03-10T06:00:00.000Z',
-        category: 'meeting'
+        category: '회의'
       }
     ]);
 
     const res = await request(app)
       .get('/events')
-      .query({ startDate: '2025-03-01', endDate: '2025-03-31', category: 'meeting' });
+      .query({ startDate: '2025-03-01', endDate: '2025-03-31', category: '회의' });
 
     expect(res.status).to.equal(200);
     expect(res.body).to.have.length(1);
-    expect(res.body[0].title).to.equal('Team Meeting');
+    expect(res.body[0].title).to.equal('팀 주간 회의');
   });
 
   // 이벤트 수정이 성공하고 변경된 값이 반영되는지(PUT 200, 제목 변경 확인)
@@ -57,10 +57,10 @@ describe('Events API', () => {
     const { body } = await request(app).post('/events').send(basePayload);
     const updateRes = await request(app)
       .put(`/events/${body.id}`)
-      .send({ ...basePayload, title: 'Sunday Service Updated' });
+      .send({ ...basePayload, title: '주일 예배 (시간 변경)' });
 
     expect(updateRes.status).to.equal(200);
-    expect(updateRes.body.title).to.equal('Sunday Service Updated');
+    expect(updateRes.body.title).to.equal('주일 예배 (시간 변경)');
   });
 
   // 이벤트 삭제 후 재조회 시 404를 반환하는지(DELETE 204, 이후 GET 404)

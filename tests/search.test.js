@@ -11,29 +11,29 @@ describe('Search API', () => {
     await sequelize.sync({ force: true });
 
     await Event.create({
-      title: 'Family Retreat',
-      description: 'Weekend retreat with families',
+      title: '가족 수련회',
+      description: '전교인 가족 수련회',
       startDateTime: '2025-06-10T00:00:00.000Z',
       endDateTime: '2025-06-12T00:00:00.000Z'
     });
 
     await Event.create({
-      title: 'Choir Practice',
-      description: 'Evening practice',
+      title: '성가대 연습',
+      description: '저녁 연습',
       startDateTime: '2025-05-03T19:00:00.000Z',
       endDateTime: '2025-05-03T20:00:00.000Z'
     });
 
     await Event.create({
-      title: 'Board Meeting',
-      description: 'Planning meeting',
+      title: '운영위원회 회의',
+      description: '기획 회의',
       startDateTime: '2025-05-04T05:00:00.000Z',
       endDateTime: '2025-05-04T06:00:00.000Z'
     });
 
     await Event.create({
-      title: 'Bible Study',
-      description: 'Weekly group study',
+      title: '성경 공부',
+      description: '주간 그룹 스터디',
       startDateTime: '2025-05-02T10:00:00.000Z',
       endDateTime: '2025-05-02T11:00:00.000Z'
     });
@@ -41,18 +41,18 @@ describe('Search API', () => {
 
   // 키워드가 제목/설명에 포함된 일정만 반환되는지 확인(200, 1건, 제목 확인)
   it('searches by keyword across title and description (GET /search/keyword)', async () => {
-    const res = await request(app).get('/search/keyword').query({ keyword: 'retreat' });
+    const res = await request(app).get('/search/keyword').query({ keyword: '수련회' });
     expect(res.status).to.equal(200);
     expect(res.body).to.have.length(1);
-    expect(res.body[0].title).to.equal('Family Retreat');
+    expect(res.body[0].title).to.equal('가족 수련회');
   });
 
   // 제목에 특정 단어가 포함된 일정 1건이 반환되는지(200, 제목 확인)
   it('searches by title (GET /search/name)', async () => {
-    const res = await request(app).get('/search/name').query({ title: 'Practice' });
+    const res = await request(app).get('/search/name').query({ title: '연습' });
     expect(res.status).to.equal(200);
     expect(res.body).to.have.length(1);
-    expect(res.body[0].title).to.equal('Choir Practice');
+    expect(res.body[0].title).to.equal('성가대 연습');
   });
 
   // 지정 날짜의 일정 1건이 반환되는지(200, 제목 확인)
@@ -60,7 +60,7 @@ describe('Search API', () => {
     const res = await request(app).get('/search/date').query({ date: '2025-05-03' });
     expect(res.status).to.equal(200);
     expect(res.body).to.have.length(1);
-    expect(res.body[0].title).to.equal('Choir Practice');
+    expect(res.body[0].title).to.equal('성가대 연습');
   });
 
   // 기간(start~end) 내 모든 일정이 포함되는지(200, 세 제목 포함)
@@ -70,9 +70,9 @@ describe('Search API', () => {
       .query({ startDate: '2025-05-01', endDate: '2025-05-04' });
     expect(res.status).to.equal(200);
     expect(res.body.map((e) => e.title)).to.have.members([
-      'Bible Study',
-      'Choir Practice',
-      'Board Meeting'
+      '성경 공부',
+      '성가대 연습',
+      '운영위원회 회의'
     ]);
   });
 
@@ -81,6 +81,6 @@ describe('Search API', () => {
     const res = await request(app).get('/search/recent').query({ limit: 2 });
     expect(res.status).to.equal(200);
     expect(res.body).to.have.length(2);
-    expect(res.body[0].title).to.equal('Bible Study');
+    expect(res.body[0].title).to.equal('성경 공부');
   });
 });

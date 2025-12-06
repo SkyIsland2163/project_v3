@@ -25,13 +25,13 @@ describe('Important API', () => {
     pastEnd.setHours(pastEnd.getHours() + 2);
 
     const future = await Event.create({
-      title: 'Future Conference',
+      title: '미래 전략 컨퍼런스',
       startDateTime: futureStart,
       endDateTime: futureEnd
     });
 
     const past = await Event.create({
-      title: 'Past Workshop',
+      title: '지난 워크샵',
       startDateTime: pastStart,
       endDateTime: pastEnd
     });
@@ -57,10 +57,10 @@ describe('Important API', () => {
     await request(app).post(`/important/${futureEventId}`);
     const memoRes = await request(app)
       .patch(`/important/${futureEventId}/memo`)
-      .send({ memo: 'Bring presentation deck' });
+      .send({ memo: '발표 자료 지참' });
 
     expect(memoRes.status).to.equal(200);
-    expect(memoRes.body.importantMemo).to.equal('Bring presentation deck');
+    expect(memoRes.body.importantMemo).to.equal('발표 자료 지참');
     expect(memoRes.body.isImportant).to.be.true;
   });
 
