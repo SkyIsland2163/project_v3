@@ -5,71 +5,86 @@ const {
   searchEventsByPeriod,
   getRecentEvents
 } = require('../services/event.service');
+const { validateDateFormat, validateRequiredParams } = require('../utils/validation');
+const { sendSuccess, sendValidationError, sendServerError } = require('../utils/response');
 
-// 키워드 검색 컨트롤러
+// 키워드 검색
 exports.handleKeywordSearch = async (req, res) => {
   try {
     const { keyword } = req.query;
     if (!keyword) {
-      return res.status(400).json({ message: 'keyword 파라미터가 필요합니다.' });
+      return sendValidationError(res, 'keyword는 필수입니다.');
     }
     const events = await searchEventsByKeyword(keyword);
-    return res.json(events);
+    return sendSuccess(res, events);
   } catch (error) {
-    return res.status(500).json({ message: '키워드 검색 중 오류가 발생했습니다.', error: error.message });
+    return sendServerError(res, '키워드 검색 중 오류가 발생했습니다.', error);
   }
 };
 
-// 제목 검색 컨트롤러
+// 제목 검색
 exports.handleTitleSearch = async (req, res) => {
   try {
     const { title } = req.query;
     if (!title) {
-      return res.status(400).json({ message: 'title 파라미터가 필요합니다.' });
+      return sendValidationError(res, 'title은 필수입니다.');
     }
     const events = await searchEventsByTitle(title);
-    return res.json(events);
+    return sendSuccess(res, events);
   } catch (error) {
-    return res.status(500).json({ message: '제목 검색 중 오류가 발생했습니다.', error: error.message });
+    return sendServerError(res, '제목 검색 중 오류가 발생했습니다.', error);
   }
 };
 
-// 날짜 검색 컨트롤러
+// 날짜 검색
 exports.handleDateSearch = async (req, res) => {
   try {
     const { date } = req.query;
     if (!date) {
-      return res.status(400).json({ message: 'date 파라미터가 필요합니다.' });
+      return sendValidationError(res, 'date는 필수입니다.');
+    }
+    const dateError = validateDateFormat(date);
+    if (dateError) {
+      return sendValidationError(res, dateError);
     }
     const events = await searchEventsByDate(date);
-    return res.json(events);
+    return sendSuccess(res, events);
   } catch (error) {
-    return res.status(500).json({ message: '날짜 검색 중 오류가 발생했습니다.', error: error.message });
+    return sendServerError(res, '날짜 검색 중 오류가 발생했습니다.', error);
   }
 };
 
-// 기간 검색 컨트롤러
+// 기간 검색
 exports.handlePeriodSearch = async (req, res) => {
   try {
     const { startDate, endDate } = req.query;
-    if (!startDate || !endDate) {
-      return res.status(400).json({ message: 'startDate와 endDate 파라미터가 필요합니다.' });
+    const validationError = validateRequiredParams(req.query, ['startDate', 'endDate']);
+    if (validationError) {
+      return sendValidationError(res, validationError);
+    }
+    const startDateError = validateDateFormat(startDate);
+    if (startDateError) {
+      return sendValidationError(res, `startDate: ${startDateError}`);
+    }
+    const endDateError = validateDateFormat(endDate);
+    if (endDateError) {
+      return sendValidationError(res, `endDate: ${endDateError}`);
     }
     const events = await searchEventsByPeriod(startDate, endDate);
-    return res.json(events);
+    return sendSuccess(res, events);
   } catch (error) {
-    return res.status(500).json({ message: '기간 검색 중 오류가 발생했습니다.', error: error.message });
+    return sendServerError(res, '기간 검색 중 오류가 발생했습니다.', error);
   }
 };
 
-// 최근 일정 조회 컨트롤러
+// 최근 일정 조회
 exports.handleRecentSearch = async (req, res) => {
   try {
     const limit = req.query.limit ? Number(req.query.limit) : 5;
     const events = await getRecentEvents(limit);
-    return res.json(events);
+    return sendSuccess(res, events);
   } catch (error) {
-    return res.status(500).json({ message: '최근 일정 조회 중 오류가 발생했습니다.', error: error.message });
+    return sendServerError(res, '최근 일정 조회 중 오류가 발생했습니다.', error);
   }
 };
 

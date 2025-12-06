@@ -5,70 +5,95 @@ const {
   getEventsForToday,
   getEventsByRange
 } = require('../services/event.service');
+const { validateCalendarParams, validateRequiredParams, validateDateFormat } = require('../utils/validation');
+const { sendSuccess, sendValidationError, sendServerError } = require('../utils/response');
 
-// 월 단위 조회 컨트롤러
+// 월간 일정 조회
 exports.handleGetMonth = async (req, res) => {
   try {
     const { year, month } = req.query;
-    if (!year || !month) {
-      return res.status(400).json({ message: 'year와 month는 필수입니다.' });
+    const validationError = validateRequiredParams(req.query, ['year', 'month']);
+    if (validationError) {
+      return sendValidationError(res, validationError);
+    }
+    const calendarError = validateCalendarParams(year, month);
+    if (calendarError) {
+      return sendValidationError(res, calendarError);
     }
     const events = await getEventsByMonth(Number(year), Number(month));
-    return res.json(events);
+    return sendSuccess(res, events);
   } catch (error) {
-    return res.status(500).json({ message: '월간 일정 조회 중 오류가 발생했습니다.', error: error.message });
+    return sendServerError(res, '월간 일정 조회 중 오류가 발생했습니다.', error);
   }
 };
 
-// 주 단위 조회 컨트롤러
+// 주간 일정 조회
 exports.handleGetWeek = async (req, res) => {
   try {
     const { year, month, week } = req.query;
-    if (!year || !month || !week) {
-      return res.status(400).json({ message: 'year, month, week는 필수입니다.' });
+    const validationError = validateRequiredParams(req.query, ['year', 'month', 'week']);
+    if (validationError) {
+      return sendValidationError(res, validationError);
+    }
+    const calendarError = validateCalendarParams(year, month, week);
+    if (calendarError) {
+      return sendValidationError(res, calendarError);
     }
     const events = await getEventsByWeek(Number(year), Number(month), Number(week));
-    return res.json(events);
+    return sendSuccess(res, events);
   } catch (error) {
-    return res.status(500).json({ message: '주간 일정 조회 중 오류가 발생했습니다.', error: error.message });
+    return sendServerError(res, '주간 일정 조회 중 오류가 발생했습니다.', error);
   }
 };
 
-// 일 단위 조회 컨트롤러
+// 일일 일정 조회
 exports.handleGetDay = async (req, res) => {
   try {
     const { date } = req.query;
     if (!date) {
-      return res.status(400).json({ message: 'date 쿼리가 필요합니다.' });
+      return sendValidationError(res, 'date는 필수입니다.');
+    }
+    const dateError = validateDateFormat(date);
+    if (dateError) {
+      return sendValidationError(res, dateError);
     }
     const events = await getEventsByDay(date);
-    return res.json(events);
+    return sendSuccess(res, events);
   } catch (error) {
-    return res.status(500).json({ message: '일간 일정 조회 중 오류가 발생했습니다.', error: error.message });
+    return sendServerError(res, '일간 일정 조회 중 오류가 발생했습니다.', error);
   }
 };
 
-// 오늘 일정 조회 컨트롤러
+// 오늘 일정 조회
 exports.handleGetToday = async (_req, res) => {
   try {
     const events = await getEventsForToday();
-    return res.json(events);
+    return sendSuccess(res, events);
   } catch (error) {
-    return res.status(500).json({ message: '오늘 일정 조회 중 오류가 발생했습니다.', error: error.message });
+    return sendServerError(res, '오늘 일정 조회 중 오류가 발생했습니다.', error);
   }
 };
 
-// 기간 조회 컨트롤러
+// 기간 일정 조회
 exports.handleGetRange = async (req, res) => {
   try {
     const { startDate, endDate } = req.query;
-    if (!startDate || !endDate) {
-      return res.status(400).json({ message: 'startDate와 endDate가 필요합니다.' });
+    const validationError = validateRequiredParams(req.query, ['startDate', 'endDate']);
+    if (validationError) {
+      return sendValidationError(res, validationError);
+    }
+    const startDateError = validateDateFormat(startDate);
+    if (startDateError) {
+      return sendValidationError(res, `startDate: ${startDateError}`);
+    }
+    const endDateError = validateDateFormat(endDate);
+    if (endDateError) {
+      return sendValidationError(res, `endDate: ${endDateError}`);
     }
     const events = await getEventsByRange(startDate, endDate);
-    return res.json(events);
+    return sendSuccess(res, events);
   } catch (error) {
-    return res.status(500).json({ message: '기간 일정 조회 중 오류가 발생했습니다.', error: error.message });
+    return sendServerError(res, '기간 일정 조회 중 오류가 발생했습니다.', error);
   }
 };
 
